@@ -32,3 +32,28 @@ export function getRandomColor(palette) {
 
   return activePalette[Math.floor(Math.random() * activePalette.length)];
 }
+
+export function getTheme(color) {
+  const picoColors = [
+    'red',
+    'pink',
+    'fuchsia',
+    'purple',
+    'violet',
+    'indigo',
+    'blue',
+    'cyan',
+    'jade',
+    'green',
+    'lime',
+    'yellow',
+    'amber',
+    'pumpkin',
+    'orange',
+    'sand',
+    'grey',
+    'zinc',
+    'slate',
+  ];
+  return getRandomColor(picoColors);
+}

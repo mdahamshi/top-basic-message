@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import expressLayouts from 'express-ejs-layouts';
 import { fileURLToPath } from 'url';
-
+import { getTheme } from './public/randomColor.js';
 import messageRoutes from './routes/messages.js';
 
 dotenv.config();
@@ -16,6 +16,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // View engine setup
+app.use((req, res, next) => {
+  res.locals.themeColor = getTheme(); // getTheme() should return a string like 'jade', 'red', etc.
+  next();
+});
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 app.use(expressLayouts);
