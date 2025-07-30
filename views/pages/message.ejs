@@ -1,0 +1,27 @@
+<h1>Message Details</h1>
+
+<article class="message" data-id="<%= msg.id %>">
+  <div class="message-header">
+    <span
+      class="avatar"
+      style="background-color: <%= msg.color || '#7d56f3' %>"
+    >
+      <%= msg.user.charAt(0).toUpperCase() %>
+    </span>
+    <div>
+      <div class="sender-info">
+        <%= msg.user %> <small><%= msg.added.toLocaleString() %></small>
+      </div>
+      <div class="bubble"><%= msg.text %></div>
+      <div class="delivered">Delivered</div>
+    </div>
+  </div>
+  <div>
+    <% if (!msg.protected) { %>
+    <form method="POST" action="/messages/<%= msg.id %>/delete">
+      <button class="secondary sb-btn" type="submit">Delete</button>
+    </form>
+    <% } %>
+    <a class="secondary sb-btn" href="/" role="button">Return</a>
+  </div>
+</article>

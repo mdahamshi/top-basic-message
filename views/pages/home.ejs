@@ -1,2 +1,10 @@
-<h1>Welcome to the Home Page</h1>
-<p>This is your dynamic content.</p>
+<h1>
+  Welcome to the
+  <%= appName %>
+</h1>
+
+<ul class="chat-container">
+  <% messages.sort((a, b) => b.added - a.added).forEach((msg) => { %>
+  <%- include('component/message', { msg: msg }) %>
+  <% }); %>
+</ul>

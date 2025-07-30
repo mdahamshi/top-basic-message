@@ -1,0 +1,22 @@
+<li class="message" data-id="<%= msg.id %>">
+  <article class="message">
+    <div class="message-header">
+      <span
+        class="avatar"
+        style="background-color: <%= msg.color || '#7d56f3' %>"
+      >
+        <%= msg.user.charAt(0).toUpperCase() %>
+      </span>
+      <div>
+        <div class="sender-info">
+          <%= msg.user %> <small><%= msg.added.toLocaleString() %></small>
+        </div>
+        <div class="bubble"><%= msg.text %></div>
+        <div class="delivered">Delivered</div>
+      </div>
+    </div>
+    <a class="secondary sb-btn" href="/messages/<%= msg.id %>" role="button"
+      >Open Message</a
+    >
+  </article>
+</li>

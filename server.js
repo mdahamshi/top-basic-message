@@ -1,73 +1,52 @@
-import express from "express";
-import dotenv from "dotenv";
-import path from "path";
-import expressLayouts from "express-ejs-layouts";
+import express from 'express';
+import dotenv from 'dotenv';
+import path from 'path';
+import expressLayouts from 'express-ejs-layouts';
+import { fileURLToPath } from 'url';
 
-import { fileURLToPath } from "url";
-import { title } from "process";
-import { renderFile } from "ejs";
+import messageRoutes from './routes/messages.js';
 
-// Load environment variables
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Path helpers
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
-// Middleware to parse JSON bodies
-app.use(express.json());
-const assetsPath = path.join(__dirname, "public");
-app.use(express.static(assetsPath));
+// View engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 app.use(expressLayouts);
-app.set("layout", "layout"); // views/layout.ejs
+app.set('layout', 'layout');
+app.use(express.urlencoded({ extended: true }));
 
-// Basic routes
+// Static + Middleware
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
-const links = [
-  { href: "/", text: "Home" },
-  { href: "about", text: "About" },
-  { href: "users", text: "Users" },
-];
 app.use((req, res, next) => {
-  res.locals.links = links;
+  console.log(`${req.method} ${req.url}`);
   next();
 });
-const users = ["Rose", "Cake", "Biff"];
 
-app.get("/", (req, res) => {
-  res.render("pages/home", {
-    users: users,
-    title: "Home",
-  });
-});
-app.get("/about", (req, res) => {
-  res.render("pages/about", {
-    title: "About",
-  });
-});
+// Locals for all views
+app.locals.appName = 'SaraMessage';
+app.locals.links = [
+  { href: '/', text: 'Home' },
+  { href: '/new', text: 'New Message' },
+];
 
-app.get("/users", (req, res) => {
-  res.render("pages/users", {
-    title: "Users",
-    users: users,
-  });
-});
+// Mount Routes
+app.use('/', messageRoutes);
 
-app.post("/api/data", (req, res) => {
-  const { name } = req.body;
-  res.json({ message: `Hello, ${name}` });
-});
-
-// 404 handler
+// 404 Handler
 app.use((req, res) => {
-  res.status(404).send("404 Not Found");
+  res.status(404).send('404 Not Found');
 });
 
-// Start the server
+// Start server
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
